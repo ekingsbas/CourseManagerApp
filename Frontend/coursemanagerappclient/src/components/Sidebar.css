@@ -1,0 +1,26 @@
+/* Sidebar.css */
+.sidebar .nav-link {
+    color: #000;
+    font-weight: 500;
+  }
+  
+  .sidebar .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .sidebar .card-header .nav-link {
+    color: #007bff;
+  }
+  
+  .sidebar .card-header:hover {
+    background-color: #e9ecef;
+  }
+  
+  .sidebar .card-body {
+    padding: 0;
+  }
+  
+  .sidebar .nav-link:hover {
+    background-color: #e9ecef;
+  }

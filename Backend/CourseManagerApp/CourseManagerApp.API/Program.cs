@@ -1,4 +1,12 @@
 
+using CourseManagerApp.Business.Contracts;
+using CourseManagerApp.Business.Services;
+using CourseManagerApp.Data.Contracts;
+using CourseManagerApp.Data.Repositories;
+using CourseManagerApp.Data;
+using Microsoft.EntityFrameworkCore;
+using CourseManagerApp.Entities;
+
 namespace CourseManagerApp.API
 {
     public class Program
@@ -7,7 +15,41 @@ namespace CourseManagerApp.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+
+            var connectionString = builder.Configuration.GetConnectionString("SqlServerConnection");
+
+
+
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlServer(connectionString));
+
+
+            builder.Services.AddScoped<IRepository<Course>>(provider =>
+            {
+                var context = provider.GetRequiredService<DatabaseContext>();
+                return new BaseRepository<Course>(context);
+            });
+
+            builder.Services.AddScoped<ICourseRepository>(provider =>
+            {
+                var context = provider.GetRequiredService<DatabaseContext>();
+                return new CourseRepository(context);
+            });
+
+            builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            builder.Services.AddScoped<ICourseService, CourseService>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,10 +65,17 @@ namespace CourseManagerApp.API
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
+
+            app.UseCors("AllowAllOrigins");
+
             app.UseAuthorization();
 
 
-            app.MapControllers();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.Run();
         }

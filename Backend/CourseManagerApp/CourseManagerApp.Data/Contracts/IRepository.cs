@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace CourseManagerApp.Data.Contracts
 {
-    internal interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : BaseEntity
     {
         Task<IEnumerable<T>> GetAllAsync();
         IEnumerable<T> GetAll();

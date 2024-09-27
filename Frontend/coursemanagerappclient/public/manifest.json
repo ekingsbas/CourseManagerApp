@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Course Manager App",
+  "name": "Course Manager App",
   "icons": [
     {
       "src": "favicon.ico",

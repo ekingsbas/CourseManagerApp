@@ -1,6 +1,6 @@
 ﻿using CourseManagerApp.Data.Contracts;
 using CourseManagerApp.Entities;
-using Microsoft.Data.Sqlite;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -39,14 +39,15 @@ namespace CourseManagerApp.Data.Repositories
 
                 return await query.FirstOrDefaultAsync();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/GetByIdAsync, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+            
         }
 
         public virtual TEntity GetById(int id)
@@ -57,14 +58,15 @@ namespace CourseManagerApp.Data.Repositories
 
                 return query.FirstOrDefault();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/GetById, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -75,7 +77,7 @@ namespace CourseManagerApp.Data.Repositories
                 var query = _context.Set<TEntity>().Where(x => true);
                 return await query.ToListAsync();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/GetAllAsync, Entity:{typeof(TEntity)}", se);
             }
@@ -83,6 +85,7 @@ namespace CourseManagerApp.Data.Repositories
             {
                 throw;
             }
+
         }
 
         public virtual IEnumerable<TEntity> GetAll()
@@ -92,14 +95,15 @@ namespace CourseManagerApp.Data.Repositories
                 var query = _context.Set<TEntity>().Where(x => true);
                 return query.ToList();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/GetAll, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public virtual async Task<TEntity> CreateAsync(TEntity entity)
@@ -110,14 +114,15 @@ namespace CourseManagerApp.Data.Repositories
                 await _context.SaveChangesAsync();
                 return entity;
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/CreateAsync, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
 
@@ -131,14 +136,15 @@ namespace CourseManagerApp.Data.Repositories
                 await _context.SaveChangesAsync();
                 return entity;
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/UpdateAsync, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public virtual async Task DeleteAsync(TEntity entity)
@@ -152,14 +158,15 @@ namespace CourseManagerApp.Data.Repositories
                 _context.Set<TEntity>().Remove(entity);
                 await _context.SaveChangesAsync();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/DeleteAsync, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public virtual async Task DeleteAsync(int id)
@@ -174,14 +181,15 @@ namespace CourseManagerApp.Data.Repositories
 
                 await DeleteAsync(entity);
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/DeleteAsync, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
 
@@ -193,14 +201,15 @@ namespace CourseManagerApp.Data.Repositories
                 var query = _context.Set<TEntity>().Where(predicate);
                 return await query?.ToListAsync();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/Where, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public virtual async Task<bool> Any(Expression<Func<TEntity, bool>> predicate)
@@ -210,14 +219,15 @@ namespace CourseManagerApp.Data.Repositories
                 var query = _context.Set<TEntity>().Where(predicate);
                 return await query?.AnyAsync();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/Any, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public async Task<int> Count(Expression<Func<TEntity, bool>> predicate)
@@ -227,14 +237,15 @@ namespace CourseManagerApp.Data.Repositories
                 var query = _context.Set<TEntity>().Where(predicate);
                 return await query?.CountAsync();
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/Count, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
         public async Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
@@ -244,14 +255,15 @@ namespace CourseManagerApp.Data.Repositories
                 var query = _context.Set<TEntity>().Where(predicate);
                 return await (query?.SingleOrDefaultAsync());
             }
-            catch (SqliteException se)
+            catch (SqlException se)
             {
                 throw new Exception($"Error en db/SingleOrDefault, Entity:{typeof(TEntity)}", se);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
+
         }
 
 

@@ -13,6 +13,12 @@ namespace CourseManagerApp.Data
 
             cnString = connString;
         }
+
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        {
+            
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -23,7 +29,10 @@ namespace CourseManagerApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite(cnString);
+            if(!options.IsConfigured)
+            {
+                options.UseSqlServer(cnString);
+            }
         }
 
         public DbSet<Course> Course { get; set; }
